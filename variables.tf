@@ -43,12 +43,6 @@ variable "delete_contents_on_destroy" {
   default     = null
 }
 
-variable "deletion_protection" {
-  description = "Whether or not to allow Terraform to destroy the instance. Unless this field is set to false in Terraform state, a terraform destroy or terraform apply that would delete the instance will fail"
-  type        = bool
-  default     = false
-}
-
 variable "default_table_expiration_ms" {
   description = "TTL of tables using the dataset in MS"
   type        = number
@@ -117,8 +111,9 @@ variable "tables" {
         interval = string,
       }),
     }),
-    expiration_time = string,
-    labels          = map(string),
+    expiration_time     = string,
+    labels              = map(string),
+    deletion_protection = optional(bool, false)
   }))
 }
 
@@ -193,9 +188,10 @@ variable "external_tables" {
       mode              = string,
       source_uri_prefix = string,
     }),
-    expiration_time = string,
-    max_staleness   = optional(string),
-    labels          = map(string),
+    expiration_time     = string,
+    max_staleness       = optional(string),
+    labels              = map(string),
+    deletion_protection = optional(bool, false)
   }))
 }
 
